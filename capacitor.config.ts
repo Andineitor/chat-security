@@ -2,11 +2,9 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'chat-security',
+  appName: 'firestore-chat-app',
   webDir: 'www',
-  server: {
-    androidScheme: 'https'
-  }
+  bundledWebRuntime: false
 };
 
 export default config;
