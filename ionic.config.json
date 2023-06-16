@@ -1,0 +1,7 @@
+{
+  "name": "chat-security",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
