@@ -44,11 +44,8 @@
           placeholder="Enter Email Address">
         </ion-input>
       </ion-item>
-      <ion-text 
-        class="ion-text-left"
-        color="danger"
-        *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched">
-        <p class="error">*Please enter proper Email Address</p>
+      <ion-text *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
+        <p>*Please enter proper Email Address</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
@@ -69,7 +66,7 @@
         *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched">
         <p 
           class="error" 
-          *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors.required">
+        *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
           *Please enter your Password
         </p>
         <p 
