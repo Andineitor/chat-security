@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "social-media-2865f"
+  },
+  "targets": {
+    "social-media-2865f": {
+      "hosting": {
+        "app": [
+          "social-media-2865f"
+        ]
+      }
+    }
+  }
+}
