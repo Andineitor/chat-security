@@ -28,14 +28,14 @@
         </ion-icon>
         <ion-input 
           formControlName="username" 
-          placeholder="Enter Username">
+          placeholder="Introduzca su nombre de usuario">
         </ion-input>
       </ion-item>
       <ion-text 
         class="ion-text-left"
         color="danger"
         *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched">
-        <p class="error">*Please enter Username</p>
+        <p class="error">*Por favor ingrese nombre de usuario</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
@@ -44,11 +44,11 @@
         </ion-icon>
         <ion-input 
           formControlName="email" 
-          placeholder="Enter Email Address">
+          placeholder="Introducir la dirección de correo electrónico">
         </ion-input>
       </ion-item>
       <ion-text *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
-        <p>*Please enter proper Email Address</p>
+        <p>*Ingrese la dirección de correo electrónico adecuada</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
@@ -60,7 +60,7 @@
         <ion-input 
           formControlName="password" 
           [type]="isTypePassword ? 'password' : 'text'"
-          placeholder="Enter Password">
+          placeholder="Introducir la contraseña">
         </ion-input>
       </ion-item>
       <ion-text 
@@ -70,24 +70,24 @@
         <p 
           class="error" 
         *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
-          *Please enter your Password
+        *Por favor, introduzca su contraseña
         </p>
         <p 
           class="error" 
           *ngIf="signupForm.get('password').dirty">
-          *Password must be of atleast 8 characters
-        </p>
+          *La contraseña debe tener al menos 8 caracteres      
+          </p>
       </ion-text>
 
       <ion-row class="ion-margin-vertical">
         <ion-col size="12" class="alignItems">
           <div align=left>
             <ion-checkbox></ion-checkbox>
-            <ion-note>I accept the policy and terms</ion-note>
+            <ion-note>Acepto la política y los términos</ion-note>
           </div>
         </ion-col>
       </ion-row>
-      <ion-button color="primary" shape="round" (click)="onSubmit()">Sign Up</ion-button>
+      <ion-button color="primary" shape="round" (click)="onSubmit()">Inscribirse</ion-button>
     </ion-list>
   </form>
 </ion-content>

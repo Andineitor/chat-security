@@ -61,8 +61,8 @@ export class SignupPage implements OnInit {
       .catch((e) => {
         console.log(e);
         this.isLoading = false;
-        let msg: string = 'Could not sign you up, please try again.';
-        if (e.code == 'auth/email-already-in-use') {
+        let msg: string = 'No se pudo registrar, intente nuevamente.';
+        if (e.code == 'auth/email-ya-en-uso') {
           msg = e.message;
         }
         this.showAlert(msg);
@@ -71,12 +71,12 @@ export class SignupPage implements OnInit {
 
   async showAlert(msg) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Important message',
+      header: 'Alerta',
+      subHeader: 'Mensaje importante',
       message: msg,
-      buttons: ['OK'],
+      buttons: ['Wueno'],
     });
-
+//andy@gmail.com
     await alert.present();
   }
 }
