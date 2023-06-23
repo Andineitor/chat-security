@@ -8,7 +8,7 @@ const routes: Routes = [
     component: HomePage,
   }
 ];
-
+//aaaa
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
