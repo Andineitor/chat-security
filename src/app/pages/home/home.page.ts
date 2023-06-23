@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-//aa
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
   ];
   chatRooms = [
     {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
-    {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
+    {id: 3, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
   ];
 
   constructor(
@@ -58,3 +58,5 @@ export class HomePage implements OnInit {
   }
 
 }
+//aaqsadasdsd
+//sad
