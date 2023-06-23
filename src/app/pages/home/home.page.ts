@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-//aaqsadasdsd
-//sad
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -59,3 +58,5 @@ export class HomePage implements OnInit {
   }
 
 }
+//aaqsadasdsd
+//sad
