@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
     {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
   ];
   chatRooms = [
-    {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
+    {id: 1, name: 'NIsssskhil', photo: 'https://i.pravatar.cc/315'},
     {id: 3, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
   ];
 
