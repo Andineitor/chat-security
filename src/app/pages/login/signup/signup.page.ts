@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -11,10 +12,12 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 export class SignupPage implements OnInit {
   signupForm: FormGroup;
   isTypePassword: boolean = true;
+  isLoading: boolean = false;
 
   constructor(
-    private afAuth: AngularFireAuth,
-    private afDB: AngularFireDatabase
+    private router: Router,
+    private authService: AuthService,
+    private alertController: AlertController
   ) {
     this.initForm();
   }
@@ -42,6 +45,38 @@ export class SignupPage implements OnInit {
   onSubmit() {
     if (!this.signupForm.valid) return;
     console.log(this.signupForm.value);
+    this.register(this.signupForm);
+  }
+
+  register(form) {
+    this.isLoading = true;
+    console.log(form.value);
+    this.authService
+      .register(form.value)
+      .then((data: any) => {
+        this.router.navigateByUrl('/home');
+        this.isLoading = false;
+        form.reset();
+      })
+      .catch((e) => {
+        console.log(e);
+        this.isLoading = false;
+        let msg: string = 'Could not sign you up, please try again.';
+        if (e.code == 'auth/email-already-in-use') {
+          msg = e.message;
+        }
+        this.showAlert(msg);
+      });
+  }
+
+  async showAlert(msg) {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      subHeader: 'Important message',
+      message: msg,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }
-

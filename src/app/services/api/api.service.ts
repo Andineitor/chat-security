@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
-import { doc, setDoc, } from 'firebase/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
+import { doc, DocumentData, setDoc } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -8,16 +8,15 @@ import { doc, setDoc, } from 'firebase/firestore';
 export class ApiService {
 
   constructor(
-    private firestore: Firestore
+    private firestore: AngularFirestore
   ) { }
 
-docRef(path,){
-  return doc(this.firestore, path)
-}
+  docRef(path: string): DocumentReference<DocumentData> {
+    return doc(this.firestore.firestore, path) as DocumentReference<DocumentData>;
+  }
 
-setDocument(path, data){
-  const dataRef = this this.docRef(path);
-  return setDoc<any>(dataRef, data);
-}
-
+  setDocument(path: string, data: any) {
+    const dataRef = this.docRef(path);
+    return setDoc(dataRef, data);
+  }
 }
