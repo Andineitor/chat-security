@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-
+//aa
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
