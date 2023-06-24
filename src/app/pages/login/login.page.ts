@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AlertController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
@@ -56,19 +57,19 @@ export class LoginPage implements OnInit {
       })
       .catch((e) => {
         console.log(e);
-        let msg = 'Could not sign you in, please try again';
-        if (e.code == 'auth/user-not-found') msg = 'E-mail address could not be found';
-        else if (e.code == 'auth/wrong-password') msg = 'Please enter a correct password';
+        let msg = 'No se pudo iniciar sesión, inténtalo de nuevo';
+        if (e.code == 'auth/user-not-found') msg = 'No se pudo encontrar la dirección de correo electrónico';
+        else if (e.code == 'auth/wrong-password') msg = 'Por favor ingrese una contraseña correcta';
         this.showAlert(msg);
       });
   }
 
   async showAlert(msg) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Important message',
+      header: 'Alerta',
+      subHeader: 'Mensaje importante',
       message: msg,
-      buttons: ['OK'],
+      buttons: ['Wueno'],
     });
 
     await alert.present();
