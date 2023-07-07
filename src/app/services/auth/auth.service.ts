@@ -1,60 +1,55 @@
+import { ApiService } from './../api/api.service';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import { getDoc, DocumentReference, DocumentSnapshot } from 'firebase/firestore';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   public _uid = new BehaviorSubject<any>(null);
   currentUser: any;
 
   constructor(
-    private fireAuth: AngularFireAuth,
+    private fireAuth: Auth,
     private apiService: ApiService
-  ) {}
+  ) { }
+
+  async login(email: string, password: string): Promise<any> {
+    try {
+      console.log(email);
+      const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
+      console.log(response);
+      if(response?.user) {
+        this.setUserData(response.user.uid);
+      }
+    } catch(e) {
+      console.log(e);
+      throw(e);
+    }
+  }
 
   getId() {
     const auth = getAuth();
+    console.log('current user auth: ', auth.currentUser);
     this.currentUser = auth.currentUser;
     console.log(this.currentUser);
     return this.currentUser?.uid;
   }
 
-  // Login
-  async login(email: string, password: string): Promise<any> {
-    try {
-      const auth = getAuth(); // Get the instance of FirebaseAuth
-      const response = await signInWithEmailAndPassword(auth, email, password);
-
-      console.log(response);
-      if (response?.user) {
-        this.setUserData(response.user.uid);
-      }
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  setUserData(uid: string): void {
+  setUserData(uid) {
     this._uid.next(uid);
   }
 
-  randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + max);
+  randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   async register(formValue) {
     try {
-      const auth = getAuth(); // Get the instance of FirebaseAuth
-      const registeredUser = await createUserWithEmailAndPassword(
-        auth,
-        formValue.email,
-        formValue.password
-      );
+      const registeredUser = await createUserWithEmailAndPassword(this.fireAuth, formValue.email, formValue.password);
+      console.log('registered user: ', registeredUser);
       const data = {
         email: formValue.email,
         name: formValue.username,
@@ -66,17 +61,16 @@ export class AuthService {
         id: registeredUser.user.uid
       };
       return userData;
-    } catch (e) {
-      throw e;
+    } catch(e) {
+      throw(e);
     }
   }
 
   async resetPassword(email: string) {
     try {
-      const auth = getAuth(); // Get the instance of FirebaseAuth
-      await sendPasswordResetEmail(auth, email);
-    } catch (e) {
-      throw e;
+      await sendPasswordResetEmail(this.fireAuth, email);
+    } catch(e) {
+      throw(e);
     }
   }
 
@@ -84,45 +78,28 @@ export class AuthService {
     try {
       await this.fireAuth.signOut();
       this._uid.next(null);
+      this.currentUser = null;
       return true;
-    } catch (e) {
-      throw e;
+    } catch(e) {
+      throw(e);
     }
   }
 
   checkAuth(): Promise<any> {
     return new Promise((resolve, reject) => {
-      const auth = getAuth(); // Get the instance of FirebaseAuth
-      const unsubscribe = auth.onAuthStateChanged((user) => {
+      onAuthStateChanged(this.fireAuth, user => {
         console.log('auth user: ', user);
-        resolve(user);
+        resolve(user)
       });
-
-      // Return the unsubscribe function to clean up the listener
-      return unsubscribe;
     });
   }
 
   async getUserData(id) {
-    const docSnap: DocumentSnapshot<any> = await this.apiService.getDocById(`user/${id}`);
-    if (docSnap?.exists()) {
-      return docSnap.data();
-    } else {
-      throw new Error('No existe el documento');
-    }
-  }
-
-  async getDocById(path): Promise<DocumentSnapshot<any>> {
-    const dataRef = this.docRef(path);
-    if (dataRef) {
-      return getDoc(dataRef);
-    } else {
-      throw new Error('Referencia de documento inválida');
-    }
-  }
-
-  private docRef(path): DocumentReference<unknown> | null {
-    // Return your Firestore document reference here
-    return null;
+    const docSnap: any = await this.apiService.getDocById(`users/${id}`);
+      if(docSnap?.exists()) {
+        return docSnap.data();
+      } else {
+        throw('No such document exists');
+      }
   }
 }

@@ -1,23 +1,21 @@
-<ion-content [fullscreen]="true">\
-
-  <ion-spinner color="dannger" class="ion-text-center" name="crescent" *ngIf="isLoading"></ion-spinner>
-
+<ion-content [fullscreen]="true">
+  <!-- <ion-spinner color="danger" class="ion-text-center" name="crescent" *ngIf="isLoading"></ion-spinner> -->
   <div class="circleBase type2 circle1"></div>
   <div class="circleBase type1"></div>
   <div class="circleBase type2 circle2"></div>
 
   <ion-label class="welcomeMessage">
-    <ion-text color="light">Hola!,</ion-text> 
-    <ion-text color="white">
-      <p>Registrate!</p>
+    <ion-text color="light">Hello,</ion-text> 
+    <ion-text color="light">
+      <p>Sign Up!</p>
     </ion-text>
   </ion-label> 
 
   <ion-icon 
     name="arrow-back-outline" 
-    color="white"
+    color="light"
     class="backButton"
-    routerLink="/home">
+    routerLink="/login">
   </ion-icon>
 
   <form [formGroup]="signupForm">
@@ -28,14 +26,14 @@
         </ion-icon>
         <ion-input 
           formControlName="username" 
-          placeholder="Introduzca su nombre de usuario">
+          placeholder="Enter Username">
         </ion-input>
       </ion-item>
       <ion-text 
         class="ion-text-left"
         color="danger"
         *ngIf="!signupForm.get('username').valid && signupForm.get('username').touched">
-        <p class="error">*Por favor ingrese nombre de usuario</p>
+        <p class="error">*Please enter Username</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
@@ -44,11 +42,14 @@
         </ion-icon>
         <ion-input 
           formControlName="email" 
-          placeholder="Introducir la dirección de correo electrónico">
+          placeholder="Enter Email Address">
         </ion-input>
       </ion-item>
-      <ion-text *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
-        <p>*Ingrese la dirección de correo electrónico adecuada</p>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!signupForm.get('email').valid && signupForm.get('email').touched">
+        <p class="error">*Please enter proper Email Address</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
@@ -60,7 +61,7 @@
         <ion-input 
           formControlName="password" 
           [type]="isTypePassword ? 'password' : 'text'"
-          placeholder="Introducir la contraseña">
+          placeholder="Enter Password">
         </ion-input>
       </ion-item>
       <ion-text 
@@ -69,25 +70,28 @@
         *ngIf="!signupForm.get('password').valid && signupForm.get('password').touched">
         <p 
           class="error" 
-        *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
-        *Por favor, introduzca su contraseña
+          *ngIf="signupForm.get('password').invalid && signupForm.get('password').errors['required']">
+          *Please enter your Password
         </p>
         <p 
           class="error" 
           *ngIf="signupForm.get('password').dirty">
-          *La contraseña debe tener al menos 8 caracteres      
-          </p>
+          *Password must be of atleast 8 characters
+        </p>
       </ion-text>
 
       <ion-row class="ion-margin-vertical">
         <ion-col size="12" class="alignItems">
           <div align=left>
             <ion-checkbox></ion-checkbox>
-            <ion-note>Acepto la política y los términos</ion-note>
+            <ion-note>I accept the policy and terms</ion-note>
           </div>
         </ion-col>
       </ion-row>
-      <ion-button color="primary" shape="round" (click)="onSubmit()">Inscribirse</ion-button>
+      <ion-button *ngIf="!isLoading" color="primary" shape="round" (click)="onSubmit()">Sign Up</ion-button>
+      <ion-button fill="clear" *ngIf="isLoading">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+      </ion-button>
     </ion-list>
   </form>
 </ion-content>
