@@ -21,7 +21,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
   imports: [    BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule, BrowserModule, IonicModule.forRoot(), 
-    AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebase)),
+    AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
      provideAuth(() =>{
       if (Capacitor.isNativePlatform()){
       return initializeAuth(getApp(),{
