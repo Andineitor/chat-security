@@ -60,7 +60,6 @@ export class HomePage implements OnInit {
   }
 
   onSegmentChanged(event: any) {
-    console.log(event);
     this.segment = event.detail.value;
   }
 
