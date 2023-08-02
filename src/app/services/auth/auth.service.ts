@@ -22,7 +22,10 @@ export class AuthService {
       const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
       console.log(response);
       if(response?.user) {
+        console.log('AUTENTICADO');
         this.setUserData(response.user.uid);
+      } else{
+        console.log('NO AUTENTICADO');
       }
     } catch(e) {
       console.log(e);
@@ -42,7 +45,7 @@ export class AuthService {
     this._uid.next(uid);
   }
 
-  randomIntFromInterval(min, max) { // min and max included 
+  randomIntFromInterval(min, max) { // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
