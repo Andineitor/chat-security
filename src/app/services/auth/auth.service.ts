@@ -18,14 +18,10 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<any> {
     try {
-      console.log(email);
       const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
-      console.log(response);
       if(response?.user) {
-        console.log('AUTENTICADO');
         this.setUserData(response.user.uid);
       } else{
-        console.log('NO AUTENTICADO');
       }
     } catch(e) {
       console.log(e);
@@ -35,9 +31,7 @@ export class AuthService {
 
   getId() {
     const auth = getAuth();
-    console.log('current user auth: ', auth.currentUser);
     this.currentUser = auth.currentUser;
-    console.log(this.currentUser);
     return this.currentUser?.uid;
   }
 
@@ -52,7 +46,6 @@ export class AuthService {
   async register(formValue) {
     try {
       const registeredUser = await createUserWithEmailAndPassword(this.fireAuth, formValue.email, formValue.password);
-      console.log('registered user: ', registeredUser);
       const data = {
         email: formValue.email,
         name: formValue.username,

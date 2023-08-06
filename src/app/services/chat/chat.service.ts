@@ -7,27 +7,26 @@ import { ApiService } from '../api/api.service';
   providedIn: 'root'
 })
 export class ChatService {
-  
+
   currentUserId: string;
   public users: Observable<any>;
   public chatRooms: Observable<any>;
   public selectedChatRoomMessages: Observable<any>;
 
   constructor(
-    public auth: AuthService, 
+    public auth: AuthService,
     private api: ApiService
-  ) { 
-    // this.getId();
+  ) {
   }
 
   getId() {
-    console.log(this.currentUserId);
     this.currentUserId = this.auth.getId();
+    return this.currentUserId;
   }
 
   getUsers() {
     this.users = this.api.collectionDataQuery(
-      'users', 
+      'users',
       this.api.whereQuery('uid', '!=', this.currentUserId)
     );
   }
@@ -39,8 +38,8 @@ export class ChatService {
       const querySnapshot = await this.api.getDocs(
         'chatRooms',
         this.api.whereQuery(
-          'members', 
-          'in', 
+          'members',
+          'in',
           [[user_id, this.currentUserId], [this.currentUserId, user_id]]
         )
       );
@@ -69,9 +68,8 @@ export class ChatService {
 
   getChatRooms() {
     this.getId();
-    console.log(this.currentUserId);
     this.chatRooms = this.api.collectionDataQuery(
-      'chatRooms', 
+      'chatRooms',
       this.api.whereQuery('members', 'array-contains', this.currentUserId)
     ).pipe(
       map((data: any[]) => {
@@ -93,7 +91,7 @@ export class ChatService {
 
   getChatRoomMessages(chatRoomId) {
     this.selectedChatRoomMessages = this.api.collectionDataQuery(
-      `chats/${chatRoomId}/messages`, 
+      `chats/${chatRoomId}/messages`,
       this.api.orderByQuery('createdAt', 'desc')
     )
     .pipe(map((arr: any) => arr.reverse()));

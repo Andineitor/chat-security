@@ -31,9 +31,7 @@
 
 <ion-content *ngIf="segment == 'chats'" color="light">
 
-  <app-empty-screen
-    *ngIf="(chatRooms | async)?.length == 0"
-    [model]="model">
+  <app-empty-screen *ngIf="(chatRooms | async)?.length == 0" [model]="model">
   </app-empty-screen>
 
   <ng-container *ngIf="segment == 'chats' && (chatRooms | async) as rooms">
@@ -44,10 +42,7 @@
         CHATS RECIENTES
       </ion-list-header>
 
-      <ion-item
-        *ngFor="let item of rooms"
-        (click)="getChat(item)"
-        [detail]="true">
+      <ion-item *ngFor="let item of rooms" (click)="getChat(item)" [detail]="true">
         <ng-container *ngIf="(item?.user | async) as user">
           <ion-avatar slot="start">
             <img [src]="getUser(user)?.photo" />
@@ -87,11 +82,8 @@
       </ion-header>
       <ion-content color="light" *ngIf="(users | async) as user$">
         <ion-list class="ion-margin-top" [style.background]="'transparent'" lines="none">
-          <app-user-list
-          *ngFor="let item of user$"
-          [item]="item"
-          (onClick)="startChat($event)">
-        </app-user-list>
+          <app-user-list *ngFor="let item of user$" [item]="item" (onClick)="startChat($event)">
+          </app-user-list>
         </ion-list>
       </ion-content>
     </ng-template>
@@ -100,7 +92,42 @@
 </ion-content>
 
 
-<ion-content *ngIf="segment == 'inicio'" color="light">
+<ion-content *ngIf="segment == 'inicio'" color="medium">
+  <ion-list>
+    <ion-item class="w-100">
+      <ion-card color="light" class="w-100">
+        <ion-card-header>
+          <ion-card-title>
+            <div class="d-flex justify-content-start align-items-center">
+              <ion-avatar>
+                <img [src]="'https://i.pravatar.cc/600'" class="m-1" />
+              </ion-avatar>
+              <ion-label class="mx-4">
+                Kevin Galarza
+                <p> 12 julio 2023</p>
+              </ion-label>
+            </div>
+          </ion-card-title>
+        </ion-card-header>
 
-
+        <ion-card-content class="d-flex justify-content-center align-items-center flex-column">
+          <ion-label class="ion-text-wrap w-100 my-3">
+            Multi-line text that should wrap when it is too long to fit on one line. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit.
+          </ion-label>
+          <img alt="Silhouette of mountains" src="https://www.dexiaabogados.com/wp-content/uploads/2023/02/metodo-abrazo.jpg" />
+          <ion-grid [fixed]="true">
+            <ion-row>
+              <ion-col>
+                <ion-button color="light" class="w-100"><ion-icon name="heart-outline"></ion-icon></ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="light" class="w-100"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
 </ion-content>

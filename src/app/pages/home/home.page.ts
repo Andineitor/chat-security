@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
 import { Observable, take } from 'rxjs';
+import { PublicationsService } from 'src/app/services/publications/publications.service';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ export class HomePage implements OnInit {
 
   @ViewChild('new_chat') modal: ModalController;
   @ViewChild('popover') popover: PopoverController;
-  segment = 'chats';
+  segment = 'inicio';
   open_new_chat = false;
   users: Observable<any[]>;
   chatRooms: Observable<any[]>;
@@ -22,29 +23,23 @@ export class HomePage implements OnInit {
     title: 'No Chat Rooms',
     color: 'danger'
   };
-  // users = [
-  //   {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
-  //   {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
-  // ];
-  // chatRooms = [
-  //   {id: 1, name: 'NIkhil', photo: 'https://i.pravatar.cc/315'},
-  //   {id: 2, name: 'XYZ', photo: 'https://i.pravatar.cc/325'},
-  // ];
+
+  publicaciones: any[] = [];
 
   constructor(
+    private publicacionesService: PublicationsService,
     private router: Router,
     private chatService: ChatService
   ) { }
 
   ngOnInit() {
     this.getRooms();
+    this.obtenerPublicacionesPorUsuario();
   }
 
   getRooms() {
-    // this.chatService.getId();
     this.chatService.getChatRooms();
     this.chatRooms = this.chatService.chatRooms;
-    console.log('chatrooms: ', this.chatRooms);
   }
 
   async logout() {
@@ -52,11 +47,20 @@ export class HomePage implements OnInit {
       console.log('logout');
       this.popover.dismiss();
       await this.chatService.auth.logout();
-      // this.chatService.currentUserId = null;
-      this.router.navigateByUrl('/login', {replaceUrl: true});
-    } catch(e) {
+      this.router.navigateByUrl('/login', { replaceUrl: true });
+    } catch (e) {
       console.log(e);
     }
+  }
+
+  obtenerPublicacionesPorUsuario(): void {
+    this.publicacionesService.getPublicacionesPorUsuario(this.chatService.getId())
+      .then((publicaciones) => {
+        this.publicaciones = publicaciones;
+      })
+      .catch((error) => {
+        console.error('Error al obtener las publicaciones:', error);
+      });
   }
 
   onSegmentChanged(event: any) {
@@ -65,7 +69,7 @@ export class HomePage implements OnInit {
 
   newChat() {
     this.open_new_chat = true;
-    if(!this.users) this.getUsers();
+    if (!this.users) this.getUsers();
   }
 
   getUsers() {
@@ -73,7 +77,7 @@ export class HomePage implements OnInit {
     this.users = this.chatService.users;
   }
 
-  onWillDismiss(event: any) {}
+  onWillDismiss(event: any) { }
 
   cancel() {
     this.modal.dismiss();
@@ -82,8 +86,6 @@ export class HomePage implements OnInit {
 
   async startChat(item) {
     try {
-      // this.global.showLoader();
-      // create chatroom
       const room = await this.chatService.createChatRoom(item?.uid);
       console.log('room: ', room);
       this.cancel();
@@ -93,10 +95,8 @@ export class HomePage implements OnInit {
         }
       };
       this.router.navigate(['/', 'home', 'chats', room?.id], navData);
-      // this.global.hideLoader();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
-      // this.global.hideLoader();
     }
   }
 
@@ -117,4 +117,5 @@ export class HomePage implements OnInit {
   getUser(user: any) {
     return user;
   }
+
 }
