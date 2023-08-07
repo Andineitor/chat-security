@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalles Publicación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item class="w-100">
+      <ion-card color="light" class="w-100">
+        <ion-card-header>
+          <ion-card-title>
+            <div class="d-flex justify-content-start align-items-center">
+              <ion-avatar>
+                <img [src]="publicacion.user_photo" class="m-1" />
+              </ion-avatar>
+              <ion-label class="mx-4">
+                {{ publicacion.name_user }}
+                <p> {{ publicacion.time }}</p>
+              </ion-label>
+            </div>
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="d-flex justify-content-center align-items-center flex-column">
+          <ion-label class="ion-text-wrap w-100 my-3">
+            {{ publicacion.texto }}
+          </ion-label>
+          <img *ngIf="publicacion.photo" alt="Silhouette of mountains" [src]="publicacion.photo" />
+          <ion-grid [fixed]="true">
+            <ion-row>
+              <ion-col>
+                <ion-button (click)="reactionCreate_Delete(publicacion.id,authService.getId())" color="light"
+                  class="w-100"><ion-icon name="heart-outline"
+                    [ngClass]="{'text-danger' : reactionReturn(publicacion)}"></ion-icon>({{ publicacion.reacciones ?
+                  publicacion.reacciones.length : '0' }})</ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button color="light" class="w-100"><ion-icon name="chatbubble-ellipses-outline"></ion-icon>({{
+                  publicacion.comentarios ? publicacion.comentarios.length : '0' }})</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+
+        <ion-list>
+
+          <ion-item *ngFor="let comentario  of publicacion.comentarios">
+            <ion-thumbnail slot="start">
+              <img alt="Silhouette of mountains" [src]="comentario.photo_user" />
+            </ion-thumbnail>
+            <ion-label>
+              <p>{{ comentario.name_user }}<span class="mx-2 text-secondary">{{ comentario.time }}</span></p>
+              {{ comentario.texto }}
+            </ion-label>
+          </ion-item>
+
+        </ion-list>
+
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-toolbar color="light">
+      <ion-thumbnail slot="start">
+        <img alt="Silhouette of mountains" [src]="authService.getPhoto()" />
+      </ion-thumbnail>
+      <ion-textarea
+        autoGrow
+        rows="1"
+        placeholder="Escribir comentario"
+        class="ion-text-center"
+        [(ngModel)]="message">
+      </ion-textarea>
+      <ion-buttons slot="end">
+        <ion-fab-button size="small" color="primary" (click)="createComment()" [disabled]="!message">
+          <ion-icon name="send"></ion-icon>
+        </ion-fab-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+
+</ion-content>

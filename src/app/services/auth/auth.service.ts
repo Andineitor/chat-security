@@ -32,8 +32,6 @@ export class AuthService {
     try {
       const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
       if(response?.user) {
-
-        // obtenemos los datos
         this.userId = response.user.uid;
         this.userDoc = this.firestore.doc(`users/${this.userId}`).valueChanges();
         this.setUserData(response.user.uid);

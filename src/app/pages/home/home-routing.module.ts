@@ -10,16 +10,20 @@ const routes: Routes = [
   },
   {
     path: 'chats/:id',
-    loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
-  },  {
+    loadChildren: () => import('./chat/chat.module').then(m => m.ChatPageModule)
+  },
+  {
     path: 'create-publication',
-    loadChildren: () => import('./create-publication/create-publication.module').then( m => m.CreatePublicationPageModule)
+    loadChildren: () => import('./create-publication/create-publication.module').then(m => m.CreatePublicationPageModule)
+  },
+  {
+    path: 'view-publication/:id',
+    loadChildren: () => import('./view-publication/view-publication.module').then(m => m.ViewPublicationPageModule)
   }
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomePageRoutingModule {}
+export class HomePageRoutingModule { }

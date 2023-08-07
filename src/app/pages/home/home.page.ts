@@ -229,7 +229,7 @@ export class HomePage implements OnInit {
     if (publicacion.reacciones) {
       return publicacion.reacciones.some(reaccion => reaccion.user_id == this.authService.getId());
     } else {
-     return false;
+      return false;
     }
   }
 
@@ -238,44 +238,48 @@ export class HomePage implements OnInit {
 
   //PERFIL, PARA ABRIR LA VENTANA QUE PERMITIRA EDITAR EL PERFIL
 
- open_perfil = false;
+  open_perfil = false;
 
- openPerfil() {
-   this.open_perfil = true;
+  openPerfil() {
+    this.open_perfil = true;
     // Llena el formulario con los datos actuales del usuario
- }
- 
- closePerfil() {
-   this.open_perfil = false;
- }
- 
- onWillDismissPerfil(event) {
-
-
-   
-  
- }
-
-
-//FUNCION QUE PERMITE ACTUALIZAR LOS DATOS EN FIRESTORE
- onSubmit() {
-  if (!this.profileForm.valid) {
-    // Mostrar un mensaje de error
-    return;
   }
-  this.authService.updateUser(
-    this.profileForm.value.name, 
-    this.profileForm.value.email, 
-    this.profileForm.value.password
-  ).then(() => {
-    console.log("Datos del usuario actualizados con éxito.");
-    // Aquí puedes agregar código para cerrar el modal si es necesario
-    this.closePerfil();
-    // Y para actualizar la información del usuario en la interfaz de usuario
-  }).catch(error => {
-    console.log("Error al actualizar los datos del usuario:", error);
-  });
-}
+
+  closePerfil() {
+    this.open_perfil = false;
+  }
+
+  onWillDismissPerfil(event) {
+
+
+
+
+  }
+
+  redirectToDetailsPublication(id: any) {
+    this.router.navigateByUrl('/home/view-publication/' + id);
+  }
+
+
+  //FUNCION QUE PERMITE ACTUALIZAR LOS DATOS EN FIRESTORE
+  onSubmit() {
+    if (!this.profileForm.valid) {
+      // Mostrar un mensaje de error
+      return;
+    }
+    this.authService.updateUser(
+      this.profileForm.value.name,
+      this.profileForm.value.email,
+      this.profileForm.value.password
+    ).then(() => {
+      console.log("Datos del usuario actualizados con éxito.");
+      // Aquí puedes agregar código para cerrar el modal si es necesario
+      this.closePerfil();
+      // Y para actualizar la información del usuario en la interfaz de usuario
+    }).catch(error => {
+      console.log("Error al actualizar los datos del usuario:", error);
+    });
+  }
 }
 
 

@@ -12,9 +12,13 @@ export class PublicationsService {
   reactions = 'like';
 
   private publication: AngularFirestoreCollection<any>;
+  private comentarios: AngularFirestoreCollection<any>;
+  private reacciones: AngularFirestoreCollection<any>;
 
   constructor(private firestore: AngularFirestore) {
     this.publication = this.firestore.collection<any>(this.collection);
+    this.comentarios = this.firestore.collection<any>(this.comments);
+    this.reacciones = this.firestore.collection<any>(this.reactions);
   }
 
   getAllsPublications() {
@@ -32,6 +36,10 @@ export class PublicationsService {
     );
   }
 
+  getPublication(id: any) {
+    return this.firestore.collection(this.collection).doc(id).valueChanges();
+  }
+
   getAllsComments() {
     return this.firestore.collection(this.comments).snapshotChanges().pipe(
       map((actions: DocumentChangeAction<any>[]) => {
@@ -44,6 +52,20 @@ export class PublicationsService {
     );
   }
 
+  getCommentsByPublications(id: string) {
+    return this.comentarios.ref.where('publicacion_id', '==', id)
+      .get()
+      .then((querySnapshot: QuerySnapshot<any>) => {
+        const comentariosData = [];
+        querySnapshot.forEach((doc) => {
+          const comentario: any = doc.data();
+          comentario.id = doc.id;
+          comentariosData.push(comentario);
+        });
+        return comentariosData;
+      });
+  }
+
   getAllsReactions() {
     return this.firestore.collection(this.reactions).snapshotChanges().pipe(
       map((actions: DocumentChangeAction<any>[]) => {
@@ -54,6 +76,20 @@ export class PublicationsService {
         });
       })
     );
+  }
+
+  getReactionsByPublications(id: string) {
+    return this.reacciones.ref.where('publicacion_id', '==', id)
+      .get()
+      .then((querySnapshot: QuerySnapshot<any>) => {
+        const comentariosData = [];
+        querySnapshot.forEach((doc) => {
+          const comentario: any = doc.data();
+          comentario.id = doc.id;
+          comentariosData.push(comentario);
+        });
+        return comentariosData;
+      });
   }
 
   getPublicationsByUSer(userID: string) {
@@ -74,6 +110,10 @@ export class PublicationsService {
 
   createReaction(data: any) {
     return this.firestore.collection(this.reactions).add(data);
+  }
+
+  createComments(data: any) {
+    return this.firestore.collection(this.comments).add(data);
   }
 
 }

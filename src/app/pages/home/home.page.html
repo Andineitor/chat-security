@@ -13,10 +13,10 @@
             LOGOUT
           </ion-label>
         </ion-content>
-    
-  
 
-    
+
+
+
       </ng-template>
     </ion-popover>
   </ion-toolbar>
@@ -110,7 +110,7 @@
 
     <ion-item *ngFor="let publicacion of publicaciones" class="w-100">
       <ion-card color="light" class="w-100">
-        <ion-card-header>
+        <ion-card-header (click)="redirectToDetailsPublication(publicacion.id)">
           <ion-card-title>
             <div class="d-flex justify-content-start align-items-center">
               <ion-avatar>
@@ -125,7 +125,7 @@
         </ion-card-header>
 
         <ion-card-content class="d-flex justify-content-center align-items-center flex-column">
-          <ion-label class="ion-text-wrap w-100 my-3">
+          <ion-label (click)="redirectToDetailsPublication(publicacion.id)" class="ion-text-wrap w-100 my-3">
             {{ publicacion.texto }}
           </ion-label>
           <img *ngIf="publicacion.photo" alt="Silhouette of mountains" [src]="publicacion.photo" />
@@ -137,7 +137,7 @@
                     [ngClass]="{'text-danger' : reactionReturn(publicacion)}"></ion-icon>({{ publicacion.reacciones ?
                   publicacion.reacciones.length : '0' }})</ion-button>
               </ion-col>
-              <ion-col>
+              <ion-col (click)="redirectToDetailsPublication(publicacion.id)">
                 <ion-button color="light" class="w-100"><ion-icon name="chatbubble-ellipses-outline"></ion-icon>({{
                   publicacion.comentarios ? publicacion.comentarios.length : '0' }})</ion-button>
               </ion-col>
@@ -146,7 +146,7 @@
         </ion-card-content>
       </ion-card>
     </ion-item>
-   
+
   </ion-list>
 
   <ion-fab slot="fixed" horizontal="end" vertical="bottom">
@@ -154,7 +154,7 @@
       <ion-icon name="settings-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  
+
 
 
   <!-- PERFIL -->
@@ -180,12 +180,12 @@
             <ion-input type="text" formControlName="name" required></ion-input>
           </ion-item>
 
-          
+
           <ion-item>
             <ion-label>Correo:</ion-label>
             <ion-input type="email" formControlName="email" required></ion-input>
           </ion-item>
-          
+
           <!-- <ion-item>
             <ion-label>Foto de Perfil:</ion-label>
             <ion-button >
@@ -197,16 +197,16 @@
             <ion-label>Contraseña Actual:</ion-label>
             <ion-input type="password" formControlName="currentPassword" required></ion-input>
           </ion-item> -->
-          
+
 
           <ion-item>
             <ion-label>Contraseña Nueva:</ion-label>
             <ion-input type="password" formControlName="password" required></ion-input>
           </ion-item>
-        
+
           <ion-button expand="full" type="submit" (click)="onSubmit()" [disabled]="!profileForm.valid">Actualizar</ion-button>
         </form>
-        
+
       </ion-content>
     </ng-template>
   </ion-modal>
