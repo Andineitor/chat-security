@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     this.initForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   initForm() {
     this.form = new FormGroup({
@@ -51,7 +51,13 @@ export class LoginPage implements OnInit {
     this.authService
       .login(form.value.email, form.value.password)
       .then((data) => {
-        console.log(data);
+        this.authService.getUserByUID(this.authService.getID()).subscribe({
+          next: result => {
+            this.authService.saveName(result.name);
+            this.authService.savePhoto(result.photo);
+          },
+          error: e => console.log(e)
+        });
         this.router.navigateByUrl('/home');
         form.reset();
       })

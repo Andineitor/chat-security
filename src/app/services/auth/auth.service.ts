@@ -1,7 +1,8 @@
 import { ApiService } from './../api/api.service';
 import { Injectable } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { BehaviorSubject } from 'rxjs';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AuthService {
 
   constructor(
     private fireAuth: Auth,
+    private firestore: AngularFirestore,
     private apiService: ApiService
   ) { }
 
@@ -20,13 +22,21 @@ export class AuthService {
     try {
       const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
       if(response?.user) {
+        response.user.uid
         this.setUserData(response.user.uid);
+        this.saveID(response.user.uid);
+        console.log(response);
       } else{
       }
     } catch(e) {
       console.log(e);
       throw(e);
     }
+  }
+
+  getUserByUID(userID: string): Observable<any> {
+    const userDocRef: AngularFirestoreDocument<any> = this.firestore.collection('users').doc<any>(userID);
+    return userDocRef.valueChanges();
   }
 
   getId() {
@@ -98,4 +108,29 @@ export class AuthService {
         throw('No such document exists');
       }
   }
+
+  saveName(name:any){
+    localStorage.setItem('name',name);
+  }
+
+  saveID(id:any){
+    localStorage.setItem('user_id',id);
+  }
+
+  savePhoto(name:any){
+    localStorage.setItem('photo',name);
+  }
+
+  getID(){
+    return localStorage.getItem('user_id');
+  }
+
+  getName(){
+    return localStorage.getItem('name');
+  }
+
+  getPhoto(){
+    return localStorage.getItem('photo');
+  }
+
 }

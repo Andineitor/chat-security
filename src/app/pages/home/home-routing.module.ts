@@ -11,7 +11,11 @@ const routes: Routes = [
   {
     path: 'chats/:id',
     loadChildren: () => import('./chat/chat.module').then( m => m.ChatPageModule)
+  },  {
+    path: 'create-publication',
+    loadChildren: () => import('./create-publication/create-publication.module').then( m => m.CreatePublicationPageModule)
   }
+
 ];
 
 @NgModule({

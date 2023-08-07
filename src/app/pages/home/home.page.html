@@ -49,13 +49,7 @@
           </ion-avatar>
           <ion-label>
             {{getUser(user)?.name}}
-            <!-- <p>
-              <ion-text>
-                message
-              </ion-text>
-            </p> -->
           </ion-label>
-          <!-- <ion-text slot="end" color="medium">10:00 AM</ion-text> -->
         </ng-container>
       </ion-item>
 
@@ -91,20 +85,36 @@
 
 </ion-content>
 
-
 <ion-content *ngIf="segment == 'inicio'" color="medium">
   <ion-list>
-    <ion-item class="w-100">
+    <ion-item class="w-100" routerLink="/home/create-publication">
       <ion-card color="light" class="w-100">
-        <ion-card-header>
+        <ion-card-header class="new-publication">
           <ion-card-title>
             <div class="d-flex justify-content-start align-items-center">
               <ion-avatar>
                 <img [src]="'https://i.pravatar.cc/600'" class="m-1" />
               </ion-avatar>
               <ion-label class="mx-4">
-                Kevin Galarza
-                <p> 12 julio 2023</p>
+                <p>¿Nueva Publicación?</p>
+              </ion-label>
+            </div>
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-item>
+
+    <ion-item *ngFor="let publicacion of publicaciones" class="w-100">
+      <ion-card color="light" class="w-100">
+        <ion-card-header>
+          <ion-card-title>
+            <div class="d-flex justify-content-start align-items-center">
+              <ion-avatar>
+                <img [src]="publicacion.user_photo" class="m-1" />
+              </ion-avatar>
+              <ion-label class="mx-4">
+                {{ publicacion.name_user }}
+                <p> {{ publicacion.time }}</p>
               </ion-label>
             </div>
           </ion-card-title>
@@ -112,10 +122,9 @@
 
         <ion-card-content class="d-flex justify-content-center align-items-center flex-column">
           <ion-label class="ion-text-wrap w-100 my-3">
-            Multi-line text that should wrap when it is too long to fit on one line. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit.
+            {{ publicacion.texto }}
           </ion-label>
-          <img alt="Silhouette of mountains" src="https://www.dexiaabogados.com/wp-content/uploads/2023/02/metodo-abrazo.jpg" />
+          <img *ngIf="publicacion.photo" alt="Silhouette of mountains" [src]="publicacion.photo" />
           <ion-grid [fixed]="true">
             <ion-row>
               <ion-col>
@@ -130,4 +139,5 @@
       </ion-card>
     </ion-item>
   </ion-list>
+
 </ion-content>

@@ -7,18 +7,28 @@ import { Observable } from 'rxjs';
 })
 export class PublicationsService {
 
-  private publicacionesCollection: AngularFirestoreCollection<any>;
+  collection = 'publicacion';
+
+  private publication: AngularFirestoreCollection<any>;
 
   constructor(private firestore: AngularFirestore) {
-    this.publicacionesCollection = this.firestore.collection<any>('publicacion');
+    this.publication = this.firestore.collection<any>(this.collection);
   }
 
-  getPublicacionesPorUsuario(userID: string) {
-    return this.publicacionesCollection.ref.where('user_id', '==', userID)
+  getAllsPublications() {
+    return this.firestore.collection(this.collection).valueChanges();
+  }
+
+  getPublicationsByUSer(userID: string) {
+    return this.publication.ref.where('user_id', '==', userID)
       .get()
       .then((querySnapshot: QuerySnapshot<any>) => {
         return querySnapshot.docs.map(doc => doc.data());
       });
+  }
+
+  createPublicaction(data: any) {
+    return this.firestore.collection(this.collection).add(data);
   }
 
 }
