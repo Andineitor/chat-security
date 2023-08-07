@@ -59,6 +59,7 @@ export class ViewPublicationPage implements OnInit {
             const time = `${date.getDate()} de ${meses[date.getMonth()]} de ${date.getFullYear()}, ${date.getHours()}:${(date.getMinutes() > 9) ? date.getMinutes() : '0' + date.getMinutes()}`;
             return { ...comentario, time }
           });
+          this.comentarios.sort((a, b) => a.fecha.toDate() - b.fecha.toDate());
           observer.next();
           observer.complete();
         }
@@ -109,6 +110,7 @@ export class ViewPublicationPage implements OnInit {
     const data = { fecha: new Date(), name_user: this.authService.getName(), photo_user: this.authService.getPhoto(), publicacion_id: this.id, texto: this.message, user_id: this.authService.getID() };
     this.publicacionesService.createComments(data).then(
       result => {
+        this.message = '';
         this.ngOnInit();
       }
     ).catch(e => console.log(e));
