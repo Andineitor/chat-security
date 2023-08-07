@@ -38,7 +38,8 @@ export class HomePage implements OnInit {
     public authService: AuthService,
     private publicacionesService: PublicationsService,
     private router: Router,
-    private chatService: ChatService
+    private chatService: ChatService,
+    
   ) { }
 
   ngOnInit() {
@@ -221,5 +222,31 @@ export class HomePage implements OnInit {
      return false;
     }
   }
+
+
+
+
+  //perfil
+
+  // perfil
+ open_perfil = false;
+
+ openPerfil() {
+   this.open_perfil = true;
+    // Llena el formulario con los datos actuales del usuario
+ }
+ 
+ closePerfil() {
+   this.open_perfil = false;
+ }
+ 
+ onWillDismissPerfil(event) {
+
+
+   
+   // Aquí puedes manejar cualquier lógica necesaria cuando el modal se está a punto de cerrar
+ }
+
+ 
 
 }

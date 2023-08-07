@@ -1,6 +1,6 @@
 <ion-header class="title-header">
   <ion-toolbar color="primary">
-    <ion-title>Fire Chat</ion-title>
+    <ion-title color="success">Meg/-\zorT</ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" id="popover">
         <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
@@ -13,10 +13,17 @@
             LOGOUT
           </ion-label>
         </ion-content>
+    
+  
+
+    
       </ng-template>
     </ion-popover>
   </ion-toolbar>
-  <ion-segment [value]="segment" mode="md" (ionChange)="onSegmentChanged($event)">
+
+
+
+  <ion-segment [value]="segment" mode="md" (ionChange)="onSegmentChanged($event)" >
     <ion-segment-button value="inicio">
       <ion-label>Inicio</ion-label>
     </ion-segment-button>
@@ -139,6 +146,57 @@
         </ion-card-content>
       </ion-card>
     </ion-item>
+   
   </ion-list>
 
+  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+    <ion-fab-button color="dark" (click)="openPerfil()">
+      <ion-icon name="settings-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+
+
+  <!-- PERFIL -->
+
+
+   <!-- perfil -->
+
+ <ion-modal #perfilModal [isOpen]="open_perfil" (willDismiss)="onWillDismissPerfil($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar color="medium">
+        <ion-title>PERFIL</ion-title>
+        <ion-buttons slot="end">
+          <ion-button color="tertiary" (click)="closePerfil()">OK</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="light">
+      <!-- Aquí va el contenido de tu perfil -->
+      <form  >
+        <ion-item style="margin: 40px;">
+          <ion-label>Nombre:</ion-label>
+          <ion-input type="text" formControlName="name" required></ion-input>
+        </ion-item>
+      
+        <ion-item style="margin: 40px;">
+          <ion-label>Foto de Perfil:</ion-label>
+          <ion-button >
+            Avatar
+          </ion-button>
+        </ion-item>
+        
+        
+        <ion-item style="margin: 40px;">
+          <ion-label>Contraseña:</ion-label>
+          <ion-input type="password" formControlName="password" ></ion-input>
+        </ion-item>
+      
+        <ion-button style="margin: 40px;" expand="full" type="submit">Actualizar</ion-button>
+      </form>
+      
+    </ion-content>
+  </ng-template>
+</ion-modal>
 </ion-content>

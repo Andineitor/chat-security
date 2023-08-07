@@ -14,11 +14,12 @@ import { indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
 import { Capacitor } from '@capacitor/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [    BrowserModule,
+  imports: [    ReactiveFormsModule, BrowserModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule, BrowserModule, IonicModule.forRoot(), 
     AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),

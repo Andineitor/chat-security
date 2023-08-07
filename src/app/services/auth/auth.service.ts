@@ -133,4 +133,9 @@ export class AuthService {
     return localStorage.getItem('photo');
   }
 
+
+
+
+  
+
 }
