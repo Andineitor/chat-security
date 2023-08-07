@@ -17,7 +17,7 @@ export class CreatePublicationPage implements OnInit {
     fecha: [new Date(), [Validators.required]],
     texto: ['', [Validators.required]],
     user_photo: [this.authService.getPhoto()],
-    name_user:[this.authService.getName()]
+    name_user: [this.authService.getName()]
   });
 
   constructor(public authService: AuthService,

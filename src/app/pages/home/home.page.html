@@ -23,9 +23,6 @@
     <ion-segment-button value="chats">
       <ion-label>Chats</ion-label>
     </ion-segment-button>
-    <!-- <ion-segment-button value="calls">
-      <ion-label>Calls</ion-label>
-    </ion-segment-button> -->
   </ion-segment>
 </ion-header>
 
@@ -128,10 +125,14 @@
           <ion-grid [fixed]="true">
             <ion-row>
               <ion-col>
-                <ion-button color="light" class="w-100"><ion-icon name="heart-outline"></ion-icon></ion-button>
+                <ion-button (click)="reactionCreate_Delete(publicacion.id,authService.getId())" color="light"
+                  class="w-100"><ion-icon name="heart-outline"
+                    [ngClass]="{'text-danger' : reactionReturn(publicacion)}"></ion-icon>({{ publicacion.reacciones ?
+                  publicacion.reacciones.length : '0' }})</ion-button>
               </ion-col>
               <ion-col>
-                <ion-button color="light" class="w-100"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></ion-button>
+                <ion-button color="light" class="w-100"><ion-icon name="chatbubble-ellipses-outline"></ion-icon>({{
+                  publicacion.comentarios ? publicacion.comentarios.length : '0' }})</ion-button>
               </ion-col>
             </ion-row>
           </ion-grid>

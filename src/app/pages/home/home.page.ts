@@ -2,7 +2,9 @@ import { ChatService } from './../../services/chat/chat.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ModalController, PopoverController } from '@ionic/angular';
-import { Observable, take } from 'rxjs';
+import { error } from 'console';
+import { Observable, forkJoin, take } from 'rxjs';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { PublicationsService } from 'src/app/services/publications/publications.service';
 
 @Component({
@@ -28,9 +30,12 @@ export class HomePage implements OnInit {
   };
 
   publicacionesByUser: any[] = [];
+  comments: any[] = [];
+  reactions: any[] = [];
   publicaciones: any[] = [];
 
   constructor(
+    public authService: AuthService,
     private publicacionesService: PublicationsService,
     private router: Router,
     private chatService: ChatService
@@ -38,8 +43,21 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.getRooms();
-    this.getPublicationsByUSer();
-    this.getAllsPublications();
+    forkJoin([this.getAllsPublications(), this.getAllsComments(), this.getAllsReactions()]).subscribe({
+      next: () => this.filterData(),
+      error: e => console.log(e)
+    });
+  }
+
+  filterData() {
+    this.publicaciones = this.publicaciones.map(publicacion => {
+      return {
+        ...publicacion,
+        comentarios: this.comments.filter(comment => comment.publicacion_id == publicacion.id),
+        reacciones: this.reactions.filter(comment => comment.publicacion_id == publicacion.id)
+      }
+    });
+    console.log(this.publicaciones);
   }
 
   getRooms() {
@@ -57,19 +75,48 @@ export class HomePage implements OnInit {
     }
   }
 
-  getAllsPublications() {
-    this.publicacionesService.getAllsPublications().subscribe((publicaciones) => {
-      this.publicaciones = publicaciones.map((publication: any) => {
-        const date: any = (publication.fecha).toDate();
-        let meses: string[] = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-        const date2 = `${date.getDate()} de ${meses[date.getMonth()]} de ${date.getFullYear()}, ${date.getHours()}:${(date.getMinutes() > 10) ? date.getMinutes() : '0' + date.getMinutes()}`;
-        return {
-          ...publication, time: date2
+  getAllsPublications(): Observable<any> {
+    return new Observable((observer: any) => {
+      this.publicacionesService.getAllsPublications().subscribe((publicaciones) => {
+        this.publicaciones = publicaciones;
+        observer.next();
+        observer.complete();
+      }, (error) => {
+        observer.error(error);
+        console.error('Error al obtener los registros:', error);
+      });
+    });
+  }
+
+  getAllsComments(): Observable<any> {
+    return new Observable((observer: any) => {
+      this.publicacionesService.getAllsComments().subscribe({
+        next: result => {
+          this.comments = result;
+          observer.next();
+          observer.complete();
+        },
+        error: e => {
+          console.log(e);
+          observer.error(e);
         }
       });
-      console.log(this.publicaciones);
-    }, (error) => {
-      console.error('Error al obtener los registros:', error);
+    })
+  }
+
+  getAllsReactions(): Observable<any> {
+    return new Observable((observer: any) => {
+      this.publicacionesService.getAllsReactions().subscribe({
+        next: result => {
+          this.reactions = result;
+          observer.next();
+          observer.complete();
+        },
+        error: e => {
+          console.log(e);
+          observer.error(e);
+        }
+      });
     });
   }
 
@@ -92,6 +139,25 @@ export class HomePage implements OnInit {
 
   onSegmentChanged(event: any) {
     this.segment = event.detail.value;
+  }
+
+  reactionCreate_Delete(publicacion_id: any, user_id: any) {
+    const publication = this.publicaciones.find(publicacion => publicacion.id == publicacion_id);
+    const reaction = publication.reacciones.find(reaction => reaction.user_id == user_id);
+    if (reaction) {
+      this.publicacionesService.deleteReaction(reaction.id).then(
+        result => {
+          publication.reacciones = publication.reacciones.filter(reaction => reaction.user_id != user_id);
+        }
+      ).catch(e => console.log(e));
+    } else {
+      const data = { publicacion_id: publicacion_id, user_id: user_id, fecha: new Date() };
+      this.publicacionesService.createReaction(data).then(
+        result => {
+          publication.reacciones.push({ id: result.id, ...data });
+        }
+      ).catch(e => console.log(e));
+    }
   }
 
   newChat() {
@@ -146,6 +212,14 @@ export class HomePage implements OnInit {
 
   getUser(user: any) {
     return user;
+  }
+
+  reactionReturn(publicacion: any) {
+    if (publicacion.reacciones) {
+      return publicacion.reacciones.some(reaccion => reaccion.user_id == this.authService.getId());
+    } else {
+     return false;
+    }
   }
 
 }
