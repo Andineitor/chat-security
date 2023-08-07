@@ -1,11 +1,12 @@
 import { ChatService } from './../../services/chat/chat.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { ModalController, PopoverController } from '@ionic/angular';
+import { AlertController, ModalController, PopoverController } from '@ionic/angular';
 import { error } from 'console';
 import { Observable, forkJoin, take } from 'rxjs';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PublicationsService } from 'src/app/services/publications/publications.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -33,13 +34,15 @@ export class HomePage implements OnInit {
   comments: any[] = [];
   reactions: any[] = [];
   publicaciones: any[] = [];
+  profileForm: FormGroup;
 
   constructor(
     public authService: AuthService,
     private publicacionesService: PublicationsService,
     private router: Router,
     private chatService: ChatService,
-    
+    private alertController: AlertController,
+
   ) { }
 
   ngOnInit() {
@@ -47,6 +50,13 @@ export class HomePage implements OnInit {
     forkJoin([this.getAllsPublications(), this.getAllsComments(), this.getAllsReactions()]).subscribe({
       next: () => this.filterData(),
       error: e => console.log(e)
+    });
+
+    //perfil
+    this.profileForm = new FormGroup({
+      'name': new FormControl(null, Validators.required),
+      'email': new FormControl(null, [Validators.required, Validators.email]),
+      'password': new FormControl(null, Validators.required)
     });
   }
 
@@ -226,9 +236,8 @@ export class HomePage implements OnInit {
 
 
 
-  //perfil
+  //PERFIL, PARA ABRIR LA VENTANA QUE PERMITIRA EDITAR EL PERFIL
 
-  // perfil
  open_perfil = false;
 
  openPerfil() {
@@ -244,9 +253,31 @@ export class HomePage implements OnInit {
 
 
    
-   // Aquí puedes manejar cualquier lógica necesaria cuando el modal se está a punto de cerrar
+  
  }
 
- 
 
+//FUNCION QUE PERMITE ACTUALIZAR LOS DATOS EN FIRESTORE
+ onSubmit() {
+  if (!this.profileForm.valid) {
+    // Mostrar un mensaje de error
+    return;
+  }
+  this.authService.updateUser(
+    this.profileForm.value.name, 
+    this.profileForm.value.email, 
+    this.profileForm.value.password
+  ).then(() => {
+    console.log("Datos del usuario actualizados con éxito.");
+    // Aquí puedes agregar código para cerrar el modal si es necesario
+    this.closePerfil();
+    // Y para actualizar la información del usuario en la interfaz de usuario
+  }).catch(error => {
+    console.log("Error al actualizar los datos del usuario:", error);
+  });
 }
+}
+
+
+
+

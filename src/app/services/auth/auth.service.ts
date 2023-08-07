@@ -1,28 +1,41 @@
 import { ApiService } from './../api/api.service';
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword } from '@angular/fire/auth';
+import {  createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, updateEmail } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
-
+import { updatePassword } from '@angular/fire/auth';
+import { AlertController } from '@ionic/angular';
+import firebase from 'firebase/compat';
+import { EmailAuthProvider, User } from 'firebase/auth';
+import { Auth } from '@angular/fire/auth';
+import { reauthenticateWithCredential } from 'firebase/auth';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  userDoc: Observable<any>;
+  userId: string;
   public _uid = new BehaviorSubject<any>(null);
   currentUser: any;
 
   constructor(
     private fireAuth: Auth,
     private firestore: AngularFirestore,
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService,
+    private alertController: AlertController
+  ) {
+
+    this.fireAuth = getAuth();
+   }
 
   async login(email: string, password: string): Promise<any> {
     try {
       const response = await signInWithEmailAndPassword(this.fireAuth, email, password);
       if(response?.user) {
-        response.user.uid
+
+        // obtenemos los datos
+        this.userId = response.user.uid;
+        this.userDoc = this.firestore.doc(`users/${this.userId}`).valueChanges();
         this.setUserData(response.user.uid);
         this.saveID(response.user.uid);
         console.log(response);
@@ -136,6 +149,51 @@ export class AuthService {
 
 
 
-  
+
+  ///perfil
+  //obtencion de datos
+
+  // Servicio de Autenticación
+
+  updateUser(name: string, email: string, password: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const user: User = this.fireAuth.currentUser;
+
+    // Re-authentication
+    const credential = EmailAuthProvider.credential(user.email, password);
+
+    reauthenticateWithCredential(user, credential).then(() => {
+      // Actualizar los datos del usuario en Firestore
+      this.firestore.doc(`users/${this.getId()}`).update({
+        name: name,
+        email: email,
+      }).then(() => {
+        // Actualizar el correo electrónico en Firebase Authentication
+        updateEmail(user, email).then(() => {
+          // Actualizar la contraseña
+          updatePassword(user, password).then(() => {
+            console.log("Correo electrónico y contraseña actualizados exitosamente.");
+            resolve();
+          }).catch(error => {
+            console.log("Error al actualizar la contraseña:", error);
+            reject(error);
+          });
+        }).catch(error => {
+          console.log("Error al actualizar el correo electrónico:", error);
+          reject(error);
+        });
+      }).catch(error => {
+        console.log("Error al actualizar los datos del usuario en Firestore:", error);
+        reject(error);
+      });
+    }).catch(error => {
+      console.log("Error en el proceso de re-autenticación:", error);
+      reject(error);
+    });
+  });
+}
+
 
 }
+
+

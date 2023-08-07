@@ -162,41 +162,52 @@
 
    <!-- perfil -->
 
- <ion-modal #perfilModal [isOpen]="open_perfil" (willDismiss)="onWillDismissPerfil($event)">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar color="medium">
-        <ion-title>PERFIL</ion-title>
-        <ion-buttons slot="end">
-          <ion-button color="tertiary" (click)="closePerfil()">OK</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content color="light">
-      <!-- Aquí va el contenido de tu perfil -->
-      <form  >
-        <ion-item style="margin: 40px;">
-          <ion-label>Nombre:</ion-label>
-          <ion-input type="text" formControlName="name" required></ion-input>
-        </ion-item>
-      
-        <ion-item style="margin: 40px;">
-          <ion-label>Foto de Perfil:</ion-label>
-          <ion-button >
-            Avatar
-          </ion-button>
-        </ion-item>
+   <ion-modal #perfilModal [isOpen]="open_perfil" (willDismiss)="onWillDismissPerfil($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="medium">
+          <ion-title>PERFIL</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="tertiary" (click)="closePerfil()">OK</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content color="light">
+        <!-- Aquí va el contenido de tu perfil -->
+        <form 	[formGroup]="profileForm"	 >
+          <ion-item>
+            <ion-label>Nombre:</ion-label>
+            <ion-input type="text" formControlName="name" required></ion-input>
+          </ion-item>
+
+          
+          <ion-item>
+            <ion-label>Correo:</ion-label>
+            <ion-input type="email" formControlName="email" required></ion-input>
+          </ion-item>
+          
+          <!-- <ion-item>
+            <ion-label>Foto de Perfil:</ion-label>
+            <ion-button >
+              Avatar
+            </ion-button>
+          </ion-item>
+           -->
+           <!-- <ion-item>
+            <ion-label>Contraseña Actual:</ion-label>
+            <ion-input type="password" formControlName="currentPassword" required></ion-input>
+          </ion-item> -->
+          
+
+          <ion-item>
+            <ion-label>Contraseña Nueva:</ion-label>
+            <ion-input type="password" formControlName="password" required></ion-input>
+          </ion-item>
         
+          <ion-button expand="full" type="submit" (click)="onSubmit()" [disabled]="!profileForm.valid">Actualizar</ion-button>
+        </form>
         
-        <ion-item style="margin: 40px;">
-          <ion-label>Contraseña:</ion-label>
-          <ion-input type="password" formControlName="password" ></ion-input>
-        </ion-item>
-      
-        <ion-button style="margin: 40px;" expand="full" type="submit">Actualizar</ion-button>
-      </form>
-      
-    </ion-content>
-  </ng-template>
-</ion-modal>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
