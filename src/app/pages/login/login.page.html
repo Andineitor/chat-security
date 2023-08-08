@@ -4,59 +4,59 @@
   <div class="circleBase type2 circle2"></div>
 
   <ion-label class="welcomeMessage">
-    <ion-text color="light">Bienvenido de nuevo,</ion-text> 
+    <ion-text color="white" class="bolder">BARRIO LA FLORESTA</ion-text>
     <ion-text color="white">
-      <p>¡Acceso!</p>
+      <p>Meg/-\zorT</p>
     </ion-text>
-  </ion-label> 
+  </ion-label>
 
   <form [formGroup]="form">
     <ion-list lines="none" class="ion-margin ion-padding ion-text-center">
       <ion-item class="ion-margin-vertical">
-        <ion-icon 
+        <ion-icon
           name="mail-outline" slot="end" color="medium">
         </ion-icon>
-        <ion-input 
-          formControlName="email" 
+        <ion-input
+          formControlName="email"
           placeholder="Introducir la dirección de correo electrónico">
         </ion-input>
       </ion-item>
-      <ion-text 
+      <ion-text
         class="ion-text-left"
         color="danger"
         *ngIf="!form.get('email').valid && form.get('email').touched">
-        <p class="error">*Ingrese la dirección de correo electrónico adecuada</p>
+        <p class="error">*Ingrese una dirección de correo electrónico válida</p>
       </ion-text>
 
       <ion-item class="ion-margin-vertical">
         <ion-icon (click)="onChange()"
-          [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'" 
-          slot="end" 
+          [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'"
+          slot="end"
           [color]="isTypePassword ? 'medium' : 'primary'">
         </ion-icon>
-        <ion-input 
-          formControlName="password" 
+        <ion-input
+          formControlName="password"
           [type]="isTypePassword ? 'password' : 'text'"
           placeholder="Introducir la contraseña">
         </ion-input>
       </ion-item>
-      <ion-text 
+      <ion-text
         class="ion-text-left"
         color="danger"
         *ngIf="!form.get('password').valid && form.get('password').touched">
-        <p 
-          class="error" 
+        <p
+          class="error"
           *ngIf="form.get('password').invalid && form.get('password').errors['required']">
           *Por favor, introduzca su contraseña
         </p>
-        <p 
-          class="error" 
+        <p
+          class="error"
           *ngIf="form.get('password').dirty">
-          *Password must be of atleast 8 characters
+          *La contraseña debe tener al menos 8 caracteres
                 </p>
       </ion-text>
 
-      <ion-row class="ion-margin-vertical">
+      <!-- <ion-row class="ion-margin-vertical">
         <ion-col size="6" class="alignItems">
           <div align=left>
             <ion-checkbox></ion-checkbox>
@@ -68,7 +68,7 @@
             <ion-note>¿Has olvidado tu contraseña?</ion-note>
           </div>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
       <ion-button color="secondary" shape="round" (click)="onSubmit()">Acceder</ion-button>
       <p class="signup">
         <ion-note >

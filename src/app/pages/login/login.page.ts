@@ -64,8 +64,8 @@ export class LoginPage implements OnInit {
       .catch((e) => {
         console.log(e);
         let msg = 'No se pudo iniciar sesión, inténtalo de nuevo';
-        if (e.code == 'auth/user-not-found') msg = 'No se pudo encontrar la dirección de correo electrónico';
-        else if (e.code == 'auth/wrong-password') msg = 'Por favor ingrese una contraseña correcta';
+        if (e.code == 'auth/user-not-found') msg = 'Email o contraseña incorrecta';
+        else if (e.code == 'auth/wrong-password') msg = 'Email o contraseña incorrecta';
         this.showAlert(msg);
       });
   }
@@ -73,7 +73,6 @@ export class LoginPage implements OnInit {
   async showAlert(msg) {
     const alert = await this.alertController.create({
       header: 'Alerta',
-      subHeader: 'Mensaje importante',
       message: msg,
       buttons: ['Wueno'],
     });

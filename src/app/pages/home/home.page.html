@@ -1,6 +1,6 @@
 <ion-header class="title-header">
   <ion-toolbar color="primary">
-    <ion-title color="success">Meg/-\zorT</ion-title>
+    <ion-title class="text-light fw-bolder">Meg/-\zorT</ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" id="popover">
         <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
@@ -10,18 +10,12 @@
       <ng-template>
         <ion-content class="ion-padding ion-text-center" (click)="logout()">
           <ion-label color="danger">
-            LOGOUT
+            Cerrar Sesión
           </ion-label>
         </ion-content>
-
-
-
-
       </ng-template>
     </ion-popover>
   </ion-toolbar>
-
-
 
   <ion-segment [value]="segment" mode="md" (ionChange)="onSegmentChanged($event)" >
     <ion-segment-button value="inicio">
@@ -72,9 +66,9 @@
     <ng-template>
       <ion-header>
         <ion-toolbar color="primary">
-          <ion-title>New Chat</ion-title>
+          <ion-title>Nuevo Chat</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">Cancelar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -149,11 +143,11 @@
 
   </ion-list>
 
-  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+  <!-- <ion-fab slot="fixed" horizontal="end" vertical="bottom">
     <ion-fab-button color="dark" (click)="openPerfil()">
       <ion-icon name="settings-outline"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
 
 

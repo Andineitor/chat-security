@@ -19,7 +19,7 @@ export class ChatPage implements OnInit {
   isLoading: boolean;
   model = {
     icon: 'chatbubbles-outline',
-    title: 'No Conversation',
+    title: 'No existen mensajes',
     color: 'danger'
   };
 
@@ -40,7 +40,7 @@ export class ChatPage implements OnInit {
     if(!id) {
       this.navCtrl.back();
       return;
-    } 
+    }
     this.id = id;
     this.chatService.getChatRoomMessages(this.id);
     this.chats = this.chatService.selectedChatRoomMessages;
