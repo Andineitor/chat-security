@@ -20,9 +20,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [AppComponent],
   imports: [    ReactiveFormsModule, BrowserModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyC8NkXjDCbvBBpepI_x0gUz_TTAFLE-zBU",
+      authDomain: "social-media-2865f.firebaseapp.com",
+      projectId: "social-media-2865f",
+      storageBucket: "social-media-2865f.appspot.com",
+      messagingSenderId: "188033546892",
+      appId: "1:188033546892:web:afb06b0bb3632672ced9a9"
+    }),
     AngularFireAuthModule, BrowserModule, IonicModule.forRoot(), 
-    AppRoutingModule, provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    AppRoutingModule, provideFirebaseApp(() => initializeApp({
+      apiKey: "AIzaSyC8NkXjDCbvBBpepI_x0gUz_TTAFLE-zBU",
+      authDomain: "social-media-2865f.firebaseapp.com",
+      projectId: "social-media-2865f",
+      storageBucket: "social-media-2865f.appspot.com",
+      messagingSenderId: "188033546892",
+      appId: "1:188033546892:web:afb06b0bb3632672ced9a9"
+    })),
      provideAuth(() =>{
       if (Capacitor.isNativePlatform()){
       return initializeAuth(getApp(),{
